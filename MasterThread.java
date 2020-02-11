@@ -1,7 +1,7 @@
 import java.util.LinkedList;
 import java.util.Queue;
 
-public class  MasterThread {
+public class  Master extends Thread {
 	private int totalslaves;
 	private int length;
 	private Queue request = new LinkedList();

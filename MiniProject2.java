@@ -1,7 +1,9 @@
-import java.util.*;
+import java.util.Scanner;
+
 public class MiniProject2 {
 
-	public static synchronized void main(String[] args) throws InterruptedException {
+	public static void main(String[] args) {
+
 		//this is for determining the total number of slave threads
 		Scanner input = new Scanner(System.in);
 		System.out.println("how many slave threads do you want? ");
@@ -17,5 +19,7 @@ public class MiniProject2 {
 			slaves[i].run();
 		}
 		Master.run();
+		
 	}
+
 }
