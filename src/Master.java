@@ -1,14 +1,14 @@
 import java.util.LinkedList;
 import java.util.Queue;
 
-public class  Master extends Thread {
+public class Master extends Thread {
 	private int totalslaves;
 	private int length;
 	private Queue request = new LinkedList();
 	private int ID = 0;
 	private long start;
 	
-	MasterThread(int n, int m) throws InterruptedException{
+	Master(int n, int m) throws InterruptedException{
 		totalslaves = n;
 		length = m;
 		start = System.currentTimeMillis();
