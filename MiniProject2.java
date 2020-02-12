@@ -13,15 +13,13 @@ public class MiniProject2 {
 		int M = input.nextInt();
 		
 		//this creates the master thread which queues requests
-		long start = System.currentTimeMillis();
-		MasterThread master = new MasterThread(N,M, start);
-		
+		MasterThread master = new MasterThread(N,M);
+		input.close();
 		//The primary part of the main thread which constantly runs
 		while(true) {
 			//prepares a new request
 			double requestTime = Math.random() * M;
 			master.Add((int) requestTime);
-			//lets user know whats happening
 			//tries to sleep a while before producing a new request
 			double sleepTime =(1000 + Math.floor(1000 * Math.random() * M));
 			try {
@@ -31,5 +29,6 @@ public class MiniProject2 {
 				e.printStackTrace();
 			}
 		}
+		
 	}
 }

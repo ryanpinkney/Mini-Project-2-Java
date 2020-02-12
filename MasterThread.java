@@ -5,15 +5,13 @@ public class  MasterThread extends Thread {
 	//various private variables for the thread
 	private Queue request = new LinkedList();
 	private int iD = 0;
-	private long start;
 	private Slave[] slaves;
 	
 	//constructor prepares all the necessary slave threads
-	public MasterThread(int n, int m, long s) throws InterruptedException{
-		start = s;
+	public MasterThread(int n, int m) throws InterruptedException{
 		slaves = new Slave[n];
 		for(int i = 0; i < n; i++) {
-			slaves[i] = new Slave(i, this, start);
+			slaves[i] = new Slave(i, this);
 			slaves[i].start();
 		}
 	}
@@ -23,6 +21,7 @@ public class  MasterThread extends Thread {
 		req[0] = item;
 		req[1] = iD;
 		request.add(req);
+		//informs user the request has been made
 		System.out.println("Producer: produced request ID " + iD + ", length " + item + " at time " + System.currentTimeMillis());
 		iD++;
 		notify();
