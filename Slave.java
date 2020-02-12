@@ -3,13 +3,11 @@ public class Slave extends Thread{
 	//important data
 	private MasterThread master;
 	private int slaveID;
-	private long start;
 
 	//simple constructor
-	public Slave(int id, MasterThread mas, long s){
+	public Slave(int id, MasterThread mas){
 		slaveID = id;
 		master = mas;
-		start = s;
 	}
 	//primary part of the slave thread
 	public synchronized void run(){
