@@ -3,7 +3,9 @@ import java.util.Queue;
 
 public class  MasterThread extends Thread {
 	//various private variables for the thread
-	private Queue request = new LinkedList();
+	private int[][] request = new int[9][2];
+	private int enque = 0;
+	private int deque = 0;
 	private int iD = 0;
 	private Slave[] slaves;
 	
@@ -20,18 +22,31 @@ public class  MasterThread extends Thread {
 		int req[] = new int[2];
 		req[0] = item;
 		req[1] = iD;
-		request.add(req);
+		while(request[enque][0] != 0) {
+			System.out.println("producer waiting");
+		}
+		request[enque] = (req);
 		//informs user the request has been made
 		System.out.println("Producer: produced request ID " + iD + ", length " + item + " at time " + System.currentTimeMillis());
 		iD++;
+		enque++;
+		if(enque > 8) {
+			enque = 0;
+		}
 		notify();
 		}
 	//this method takes the head of the queue and returns it
 	public synchronized Object Remove() throws InterruptedException {
-		while(request.peek() == null) {
+		while(request[deque][0] == 0) {
 				wait();
 		}
-		Object returnable = request.remove();
+		int[] returnable = request[deque];
+		request[deque][0] = 0;
+		request[deque][1] = 0;
+		deque++;
+		if(deque > 8) {
+			deque = 0;
+		}
 		return returnable;
 	}
 }

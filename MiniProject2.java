@@ -18,10 +18,10 @@ public class MiniProject2 {
 		//The primary part of the main thread which constantly runs
 		while(true) {
 			//prepares a new request
-			double requestTime = Math.random() * M;
+			double requestTime = 1000 * Math.random() * M;
 			master.Add((int) requestTime);
 			//tries to sleep a while before producing a new request
-			double sleepTime =(1000 + Math.floor(1000 * Math.random() * M));
+			double sleepTime =(1000 + Math.floor(1000 * Math.random() * (M - 1)));
 			try {
 				System.out.println("Producer: sleeping for " + sleepTime/1000 + " seconds");
 				Thread.sleep((int) sleepTime);
