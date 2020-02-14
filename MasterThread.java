@@ -10,7 +10,7 @@ public class  MasterThread extends Thread {
 	private Slave[] slaves;
 	
 	//constructor prepares all the necessary slave threads
-	public MasterThread(int n, int m) throws InterruptedException{
+	public MasterThread(int n) throws InterruptedException{
 		slaves = new Slave[n];
 		for(int i = 0; i < n; i++) {
 			slaves[i] = new Slave(i, this);
@@ -23,7 +23,6 @@ public class  MasterThread extends Thread {
 		req[0] = item;
 		req[1] = iD;
 		while(request[enque][0] != 0) {
-			System.out.println("producer waiting");
 		}
 		request[enque] = (req);
 		//informs user the request has been made

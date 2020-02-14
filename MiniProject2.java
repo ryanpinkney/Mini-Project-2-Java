@@ -13,7 +13,7 @@ public class MiniProject2 {
 		int M = input.nextInt();
 		
 		//this creates the master thread which queues requests
-		MasterThread master = new MasterThread(N,M);
+		MasterThread master = new MasterThread(N);
 		input.close();
 		//The primary part of the main thread which constantly runs
 		while(true) {
