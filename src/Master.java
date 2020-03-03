@@ -45,7 +45,7 @@ public class Master extends Thread {
 
 		// While the queue is full, wait until there is space.
 		while(queueSpace == 0) {
-			System.out.println("Queue length exceeded. Waiting to add request.");
+			print("Queue length exceeded. Waiting to add request.");
 			wait();
 		}
 
@@ -67,7 +67,7 @@ public class Master extends Thread {
 
 		// While the queue is empty, wait until there is a new request generated.
 		while(queueSpace == queue.length) {
-			System.out.println("No requests are available. Waiting to receive request.");
+			print("No requests are available. Waiting to receive request.");
 			wait();
 		}
 
@@ -94,10 +94,10 @@ public class Master extends Thread {
 				int requestTime = rand.nextInt(maxRequestLength) + 1;
 				Request request = new Request(requestTime);
 				add(request);
-				System.out.println("Producer: produced request id=" + request.getId() + " of length " + requestTime + "ms at time " + (System.currentTimeMillis() - startTime) + "ms");
+				print("Produced request id=" + request.getId() + " of length " + requestTime + "ms at time " + (System.currentTimeMillis() - startTime) + "ms");
 
 				int sleepTime = rand.nextInt(1000) + 1;
-				System.out.println("Producer: sleeping for " + sleepTime + "ms");
+				print("Sleeping for " + sleepTime + "ms");
 				Thread.sleep(sleepTime);
 
 			} catch (InterruptedException e) {
@@ -106,6 +106,14 @@ public class Master extends Thread {
 
 		}
 
+	}
+
+	/**
+	 * Helper method to ensure we're always printing that we are the producer.
+	 * @param s The string to print.
+	 */
+	private void print(String s) {
+		System.out.println("Producer: " + s);
 	}
 	
 }

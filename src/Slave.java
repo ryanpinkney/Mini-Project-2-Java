@@ -42,11 +42,11 @@ public class Slave extends Thread {
 			try {
 
 				// Get a request from the master thread. If there are none, master.remove() will wait.
-				System.out.println("Slave id=" + id + ": Waiting for a request to be available.");
+				print("Waiting for a request to be available.");
 				Request request = master.remove();
 
 				// Handle request
-				System.out.println("Handing request id=" + request.getId() + ", length=" + request.getLength());
+				print("Handing request id=" + request.getId() + ", length=" + request.getLength());
 				handleRequest(request);
 
 			} catch(InterruptedException e) {
@@ -56,4 +56,13 @@ public class Slave extends Thread {
 		}
 
 	}
+
+	/**
+	 * Helper method to ensure we're always printing that we are the consumer and our id.
+	 * @param s The string to print.
+	 */
+	private void print(String s) {
+		System.out.println("Consumer id=" + id + ": " + s);
+	}
+
 }

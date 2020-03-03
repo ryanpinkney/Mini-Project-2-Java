@@ -10,6 +10,7 @@ public class MiniProject2 {
 		int n = input.nextInt();
 		System.out.println("How many seconds should maximum request length be? ");
 		int m = input.nextInt();
+		input.close();
 		
 		// Create the master (producer) thread which produces requests.
 		// The project specifies that the queue length will be equal to the number of slave threads.
