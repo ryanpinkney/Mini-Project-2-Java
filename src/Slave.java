@@ -1,10 +1,14 @@
 
 public class Slave extends Thread {
 
+	private static int idCount = 0;
+
 	private Master master;
+	private int id;
 
 	public Slave(Master master) {
 		this.master = master;
+		id = idCount++;
 	}
 
 	public synchronized void handleRequest(int delay) {
@@ -24,7 +28,7 @@ public class Slave extends Thread {
 			try {
 
 				//wait for a request to be available
-				System.out.println("Waiting for a request to be available.");
+				System.out.println("Slave id=" + id + ": Waiting for a request to be available.");
 				Request request = master.remove();
 
 				//print request info
