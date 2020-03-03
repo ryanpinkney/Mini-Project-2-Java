@@ -1,9 +1,18 @@
-
 public class Slave extends Thread {
 
+	/**
+	 * A count to generate new IDs from.
+	 */
 	private static int idCount = 0;
 
+	/**
+	 * A pointer to the master thread.
+	 */
 	private Master master;
+
+	/**
+	 * Unique ID of this slave thread.
+	 */
 	private int id;
 
 	public Slave(Master master) {
@@ -11,10 +20,15 @@ public class Slave extends Thread {
 		id = idCount++;
 	}
 
-	public synchronized void handleRequest(int delay) {
+	/**
+	 * Simulate spending resources processing a request.
+	 * @param r The request to process.
+	 */
+	public synchronized void handleRequest(Request r) {
 
 		try {
-			sleep(delay);
+			// No real processing, just sleep for the specified delay.
+			sleep(r.getLength());
 		} catch(InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -27,15 +41,13 @@ public class Slave extends Thread {
 
 			try {
 
-				//wait for a request to be available
+				// Get a request from the master thread. If there are none, master.remove() will wait.
 				System.out.println("Slave id=" + id + ": Waiting for a request to be available.");
 				Request request = master.remove();
 
-				//print request info
+				// Handle request
 				System.out.println("Handing request id=" + request.getId() + ", length=" + request.getLength());
-
-				//handle request
-				handleRequest(request.getLength());
+				handleRequest(request);
 
 			} catch(InterruptedException e) {
 				e.printStackTrace();
