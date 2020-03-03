@@ -1,43 +1,72 @@
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.Random;
 
 public class Master extends Thread {
-	private int totalslaves;
-	private int length;
-	private Queue request = new LinkedList();
-	private int ID = 0;
-	private long start;
+
+	private Request[] queue;
+	private int queueCount;
+	private int queueSpace;
+	private int maxRequestLength;
 	
-	Master(int n, int m) throws InterruptedException{
-		totalslaves = n;
-		length = m;
-		start = System.currentTimeMillis();
+	Master(int n, int m) {
+
+		queue = new Request[n];
+		queueCount = 0;
+		queueSpace = n;
+		maxRequestLength = m * 1000;
+
 	}
-	public synchronized void Add(Object item, int ID) {	
-		request.add(item);
-		ID++;
-		notify();
-	}
-	public synchronized Object Remove() throws InterruptedException {
-		while(request.peek() != null) {
+
+	public synchronized void add(Request request) throws InterruptedException {
+
+		while(queueSpace == 0) {
+			System.out.println("Queue length exceeded. Waiting to add request.");
 			wait();
 		}
-		Object returnable = request.remove();
-		return returnable;
+
+		queueSpace--;
+		queue[queueCount++ % queue.length] = request;
+
+		notifyAll();
+
 	}
+
+	public synchronized Request remove() throws InterruptedException {
+
+		while(queueSpace == queue.length) {
+			System.out.println("No requests are available. Waiting to receive request.");
+			wait();
+		}
+
+		Request result = queue[(queueCount + queueSpace++) % queue.length];
+		notifyAll();
+		return result;
+
+	}
+
 	public synchronized void run() {
+
+		Random rand = new Random();
+		long startTime = System.currentTimeMillis();
+
 		while(true) {
-			int requestTime = (int) Math.random() * 10;
-			Add(requestTime, ID);
-			System.out.println("Producer: produced request ID " + ID + ", length " + (requestTime)/1000 + " at time " + (start - System.currentTimeMillis())/1000);
-			int sleepTime = (int) (1000 + Math.random() * length);
+
 			try {
+
+				int requestTime = rand.nextInt(maxRequestLength) + 1;
+				Request request = new Request(requestTime);
+				add(request);
+				System.out.println("Producer: produced request id=" + request.getId() + " of length " + requestTime + "ms at time " + (System.currentTimeMillis() - startTime) + "ms");
+
+				int sleepTime = rand.nextInt(1000) + 1;
+				System.out.println("Producer: sleeping for " + sleepTime + "ms");
 				Thread.sleep(sleepTime);
-				System.out.println("Producer: sleeping for " + sleepTime + " seconds");
+
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
+
 		}
+
 	}
 	
 }

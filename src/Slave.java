@@ -1,19 +1,43 @@
 
-public class Slave extends Thread{
-	private MasterThread Master;
-	int slaveID;
+public class Slave extends Thread {
 
-	public Slave(int id, MasterThread mas){
-		slaveID = id;
-		Master = mas;
+	private Master master;
+
+	public Slave(Master master) {
+		this.master = master;
 	}
-	public void run(){
-		Object command;
+
+	public synchronized void handleRequest(int delay) {
+
 		try {
-			command = Master.Remove();
-		} catch (InterruptedException e) {
+			sleep(delay);
+		} catch(InterruptedException e) {
 			e.printStackTrace();
 		}
-		System..out.println("Consumer " + slaveID +": " );
+
+	}
+
+	public void run() {
+
+		while(true) {
+
+			try {
+
+				//wait for a request to be available
+				System.out.println("Waiting for a request to be available.");
+				Request request = master.remove();
+
+				//print request info
+				System.out.println("Handing request id=" + request.getId() + ", length=" + request.getLength());
+
+				//handle request
+				handleRequest(request.getLength());
+
+			} catch(InterruptedException e) {
+				e.printStackTrace();
+			}
+
+		}
+
 	}
 }
